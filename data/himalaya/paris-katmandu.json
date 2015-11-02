@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "description": "De Paris à Kathmandu"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.373046875,
+            48.922499263758255
+          ],
+          [
+            85.308837890625,
+            27.712710260887476
+          ]
+        ]
+      }
+    }
+  ]
+}
