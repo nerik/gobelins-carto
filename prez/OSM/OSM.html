@@ -1,0 +1,266 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><style type='text/css'>
+body {
+  font-family:'Helvetica';
+  letter-spacing:-5px;
+  background:#000;
+  background-size:100%;
+  color:#fff;
+  margin:0;
+  padding:0;
+  font-weight:bold;
+}
+
+h1, h2, h3, p {
+  margin:0;
+}
+
+em, a {
+  font-style:normal;
+  color:#8dbd0c;
+}
+
+a {
+  background:#34d0e7;
+  color:#000;
+  text-decoration:none;
+}
+
+img {
+  width:100%;
+}
+
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0px;
+  left:0px;
+  padding:75px;
+  line-height:97%;
+}
+
+div.center {
+  text-align:center;
+}
+
+div.imageText {
+  text-shadow:0px 0px 5px rgba(0,0,0,0.2);
+}
+
+notes {
+    display:none;
+}
+/* normally not good, but ok in context of full screen directional navigation */
+:focus {
+    outline: 0;
+}
+
+</style><script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), ti, i;
+    for (i = 0; i < s.length; i++) s[i].setAttribute('tabindex', 0);
+    if (!s) return;
+    var big = { current: 0, forward: fwd, reverse: rev, go: go, length: s.length };
+    window.big = big;
+    function resize() {
+        var w = window.innerWidth, h = window.innerHeight, e = s[big.current];
+        e.style.fontSize = h + 'px';
+        for (i = h - 2; i > 0 && (e.offsetWidth > w || e.offsetHeight > h); i -= 2) {
+            e.style.fontSize = i + 'px';
+        }
+        e.style.marginTop = (h - e.offsetHeight) / 2 + 'px';
+    }
+    function go(n) {
+        big.current = n;
+        var e = s[n], t = parseInt(e.getAttribute('data-timeToNext') || 0, 10),
+            notes = e.getElementsByTagName('notes');
+        document.body.className = e.getAttribute('data-bodyclass') || '';
+        for (i = 0; i < s.length; i++) s[i].style.display = 'none';
+        e.style.display = 'inline';
+        e.focus();
+        for (i = 0; typeof console === 'object' && i < notes.length; i++) console.log('%c%s: %s', 'padding:5px;font-family:serif;font-size:18px;line-height:150%;', n, notes[i].innerHTML.trim());
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url("' + e.firstChild.src + '")';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        if (t > 0) ti = window.setTimeout(fwd, t * 1000);
+        resize();
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function() { go(++big.current % s.length); };
+    function fwd() { go(Math.min(s.length - 1, ++big.current)); }
+    function rev() { go(Math.max(0, --big.current)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e2) {
+            var x1 = e2.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) big.current = parse_hash() || big.current;
+    window.onhashchange = function() {
+        i = parse_hash();
+        if (i !== big.current) go(i);
+    };
+    window.onresize = resize;
+    go(big.current);
+};
+</script></head><body>
+<div>La révolution <em>OpenStreetMap</em></div>
+<div>.<img src="img/logo.png" alt=""></div>
+<div>OpenStreetMap est le <em>wikipedia</em> des cartes</div>
+<div>Tout le monde peut l'<em>utiliser</em></div>
+<div>Tout le monde peut l'<em>éditer</em></div>
+
+<div><em>Démonstration</em></div>
+
+<div>En fait, OpenStreetMap <em>n'est pas</em> une carte.</div>
+
+<div>OSM c'est des données</div>
+<div>Beaucoup de données</div>
+<div><img src="img/data.png" alt=""></div>
+<div>Beaucoup, beaucoup, de données</div>
+<div><img src="img/lots_data.png" alt=""></div>
+
+<div>Dans OSM, il y'a aussi du <em>code</em> et des <em>outils</em></div>
+<div><img src="img/mindmap.png" alt=""></div>
+<div><a href="https://www.mindmeister.com/399697910/openstreetmap-stack-visualisation-mind-map">Beaucoup de code</a> :)</div>
+<div>C'est la <em>stack</em> OSM</div>
+<div>= un écosystème Open Source (principalement)</div>
+<div>Réutilisable :</div>
+<div><img src="img/OGF.png" alt="" /><a href="http://www.opengeofiction.net/#map=11/44.9551/28.9634">OpenGeoFiction</a></div>
+<div>Mapnik, Overpass, PostgreSQL, JOSM, mod_tile, etc...</div>
+
+<div>OSM, c'est aussi des <em>gens</em> ©</div>
+<div>Plein de gens</div>
+<div><img src="img/gens.png" alt=""></div>
+<div>Qui se retrouvent dans des <em>cartoparties</em></div>
+<div><img src="img/cartopartie.jpeg" alt="">là au Japon, après le tsunami</div>
+<div><img src="img/cartopartie2.jpg" alt="">à Cergy</div>
+<div><img src="img/sotm.jpeg" alt="">et au "State of the Map"</div>
+<div>:<img src="img/stevecoast.jpeg" alt=""></div>
+<div>Lui c'est Steve Coast, il a crée OSM</div>
+
+<div>Bref</div>
+<div>Des données (libres)</div>
+<div>Du code (libre)</div>
+<div>Des gens</div>
+<div><em>= carte du monde</em></div>
+<div>= la carte du monde la plus <em>complète</em> de l'histoire de l'humanité</div>
+
+<div style="color:black"><img src="img/org.png" alt=""><em>une</em> carte ?</div>
+<div>Pas forcément celle là</div>
+<div><img src="img/org.png" alt=""></div>
+<div>"Elle est <em>moche</em>"</div>
+<div>Pas faux.</div>
+<div>(c'est pas le but)</div>
+
+<div>Mais OSM, c'est <em>des</em> cartes :</div>
+
+<div><img src="img/pinterest.png" />Pinterest</div>
+<div><img src="img/stamen.png" />Stamen Watercolor</div>
+<div><img src="img/tangram.png" />Tangram</div>
+<div><img src="img/show_inception.png" />Tangram</div>
+<div><img src="img/show_field.png" /><a href="http://fieldpapers.org/">Field papers</a></div>
+<div><img src="img/show_4D.jpg" /><br>:)</div>
+
+
+<div>À quoi ça <em>sert?</em></div>
+<div><a href="http://www.newsminer.com/news/alaska_news/map-experts-pilots-aim-to-improve-alaska-s-outdated-charts/article_2bf244c8-5571-11e4-ac67-0017a43b2370.html?utm_content=buffer4ea80&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+">"Mars is better mapped than the state of Alaska"</a></div>
+<div>le problème avec <em>Google Maps</em> (et autres)</div>
+<div>données <em>copyrightées</em></div>
+<div>stack <em>closed source</em></div>
+<div><img src="img/closed.png" alt=""></div>
+<div>une carte <em>inégalitaire</em></div>
+<div><img src="img/compare.png" alt=""></div>
+<div>la <em>neutralité</em></div>
+<div>la neutralité <em>politique</em></div>
+<div><img src="img/neutrality.png" alt=""></div>
+<div><img src="img/neutrality.png" alt=""><a href="http://opennews.kzhu.io/map-disputes/">Disputed territories</a></div>
+<div>la neutralité <em>commerciale</em></div>
+
+<div>interlude <em>Disney</em></div>
+<div><img src="img/danold.gif" alt=""></div>
+<div><img src="img/disneyland.png" alt=""></div>
+
+
+<div>Comment ça marche?</div>
+
+<div>le modèle de données d'OSM est <em>simple</em><img src="img/types.png" alt=""></div>
+<div>nodes</div>
+<div><img src="img/node1.png" alt=""></div>
+<div><img src="img/node2.png" alt=""></div>
+<div>ways</div>
+<div><img src="img/ways1.png" alt=""></div>
+<div><img src="img/ways2.png" alt=""></div>
+<div><img src="img/ways3.png" alt=""></div>
+<div><img src="img/ways4.gif" alt=""></div>
+<div>relations</div>
+<div><img src="img/relations.gif" alt=""></div>
+<div>et enfin: tags</div>
+<div><img src="img/tags.png" alt=""></div>
+<div><img src="img/tags_logo.png" alt=""></div>
+<div><img src="img/features.png" alt=""><a href="http://wiki.openstreetmap.org/wiki/Map_Features"><br><br>Map features ! (youpi)</a></div>
+
+
+<div><img src="img/then_now.png" alt=""><a href="http://mvexel.github.io/thenandnow/#11/48.8555/2.3494">2007 -> 2015</a></div>
+
+<div>Erik Escoffier. Screens du <a href="https://github.com/mapbox/mapping/wiki/">wiki Mapbox</a>. Cette presentation est sous CC-BY-SA</div>
+
+</body>
+</html>
+
+
+
+
+<!--
+
+
+Mars is better mapped than the state of Alaska"
+- HOT Haiti
+Drones
+- l’open data gov : bouger les lignes (BANO IGN, FFR)
+https://docs.google.com/document/d/1-7OW64gWawTzZlUphM7iAKuif7aihv6L6NiW06jnemg/pub#h.7jqmywjuipzy
+https://cgtgeo.wordpress.com/2014/09/25/la-base-adresse-de-lign-en-danger/
+
+- Apple, Foursquare, Craigslist, Wikipedia
+- Mapbox :
+
+says Gunderson. “We believe OSM is going to win.”
+
+“Geospatial data is a project that’s too big solve by a single commercial entity with a business model based on commercializing that data,” says Alex Barth
+
+
+- comment ça marche?
+- 3 primitives et c’est tout, une BDD peu structurée http://wiki.openstreetmap.org/wiki/Elements
+https://github.com/mapbox/mapping/wiki/The%20OpenStreetMap%20Data%20Model
+
+- tout repose sur la folksonomie : http://wiki.openstreetmap.org/wiki/Map_Features
+- intérêt des tags : une carte globale est illusoire (cf discussion nouveau style basemap en UK)
+- démo Overpass
+http://www.openstreetmap.org/user/ypid/diary/23719
+- évolution d’OSM
+https://vimeo.com/16146087
+https://www.mapbox.com/ten-years-openstreetmap/
+- comparaison http://tools.geofabrik.de/mc/#15/42.8723/-8.5289&num=3&mt0=mapnik&mt1=google-map&mt2=bing-map
+- la carte pour tlm: edit avec iD, cartoparties
+-
+- la réponse Open Data à Street View : Mapillary
+
+-->
