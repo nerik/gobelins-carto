@@ -1,0 +1,173 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><style type='text/css'>
+body {
+  font-family:'Helvetica';
+  letter-spacing:-5px;
+  background:#000;
+  background-size:100%;
+  color:#fff;
+  margin:0;
+  padding:0;
+  font-weight:bold;
+}
+
+h1, h2, h3, p {
+  margin:0;
+}
+
+em, a {
+  font-style:normal;
+  color:#8dbd0c;
+}
+
+a {
+  background:#34d0e7;
+  color:#000;
+  text-decoration:none;
+}
+
+img {
+  width:100%;
+}
+
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0px;
+  left:0px;
+  padding:75px;
+  line-height:97%;
+}
+
+div.center {
+  text-align:center;
+}
+
+div.imageText {
+  text-shadow:0px 0px 5px rgba(0,0,0,0.2);
+}
+
+notes {
+    display:none;
+}
+/* normally not good, but ok in context of full screen directional navigation */
+:focus {
+    outline: 0;
+}
+
+</style><script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), ti, i;
+    for (i = 0; i < s.length; i++) s[i].setAttribute('tabindex', 0);
+    if (!s) return;
+    var big = { current: 0, forward: fwd, reverse: rev, go: go, length: s.length };
+    window.big = big;
+    function resize() {
+        var w = window.innerWidth, h = window.innerHeight, e = s[big.current];
+        e.style.fontSize = h * .1 + 'px';
+        for (i = h - 2; i > 0 && (e.offsetWidth > w || e.offsetHeight > h); i -= 2) {
+            e.style.fontSize = i + 'px';
+        }
+        e.style.marginTop = (h - e.offsetHeight) / 2 + 'px';
+    }
+    function go(n) {
+        big.current = n;
+        var e = s[n], t = parseInt(e.getAttribute('data-timeToNext') || 0, 10),
+            notes = e.getElementsByTagName('notes');
+        document.body.className = e.getAttribute('data-bodyclass') || '';
+        for (i = 0; i < s.length; i++) s[i].style.display = 'none';
+        e.style.display = 'inline';
+        e.focus();
+        for (i = 0; typeof console === 'object' && i < notes.length; i++) console.log('%c%s: %s', 'padding:5px;font-family:serif;font-size:18px;line-height:150%;', n, notes[i].innerHTML.trim());
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url("' + e.firstChild.src + '")';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        if (t > 0) ti = window.setTimeout(fwd, t * 1000);
+        resize();
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function() { go(++big.current % s.length); };
+    function fwd() { go(Math.min(s.length - 1, ++big.current)); }
+    function rev() { go(Math.max(0, --big.current)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e2) {
+            var x1 = e2.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) big.current = parse_hash() || big.current;
+    window.onhashchange = function() {
+        i = parse_hash();
+        if (i !== big.current) go(i);
+    };
+    window.onresize = resize;
+    go(big.current);
+};
+</script></head><body>
+<div>Cartes</div>
+<div><img src="img/hot.png"></div>
+<div><img src="img/lost.png"></div>
+<div><img src="img/migrants.png" alt="" /><a href="http://www.lucify.com/the-flow-towards-europe/">The flow towards Europe</a></div>
+<div><img src="img/germany.png" alt=""><a href="http://blog.webkid.io/we-let-people-draw-the-former-inner-german-border/">We let 10k+ people draw the former inner-german border. This is what happened.</a></div>
+<div><img src="img/france_uk.jpg"><a href="http://www.buzzfeed.com/ceciledehesdin/france-is-in-the-kitchen#.oypJ12YOJ">La France par les anglais</a></div>
+<div><img src="img/tube_map.gif"></div>
+<div><img src="img/tube_paris.gif"></div>
+<div><img src="img/tube_ny.jpg"></div>
+<div><img src="img/vinelli.jpg"><a href="http://transitmaps.tumblr.com/post/46855668565/book-vignelli-transit-maps">Vinelli</a></div>
+<div><img src="img/mines.png"><a href="http://cartesmich.free.fr/ww2.php">l'histoire</a></div>
+<div><img src="img/matterhorn.jpg"><a href="https://www.youtube.com/watch?v=Fs2C_wXQ_lM">Matterhorn avec des drones</a></div>
+<div><img src="img/aral.jpeg">la mer d'Aral</div>
+<div><img src="img/slums.jpg"><a href="http://www.citylab.com/tech/2015/02/kids-are-sparking-urban-planning-changes-by-mapping-their-slums/385636/">Kids in India Are Sparking Urban Planning Changes by Mapping Slums</a></div>
+<div><img src="img/breweries.png"><a href="http://webapps.esri.com.s3.amazonaws.com/mwl-maps/breweries-world.html">Breweries</a></div>
+<div><img src="img/random_google.png"><a href="http://www.shaunutter.com/coding/random-google-maps/">Random Google Maps</a></div>
+<div><img src="img/runkeeper.png"><a href="https://www.mapbox.com/blog/runkeeper-million-routes/">Runkeeper</a></div>
+<div><img src="img/strava.png"><a href="http://labs.strava.com/heatmap/#11/2.33236/48.86367/blue/run">Strava global heatmap</a></div>
+<div><img src="img/coldwar1.png"><a href="http://www.wired.com/2015/07/secret-cold-war-maps/">la guerre froide</a></div>
+<div><img src="img/coldwar2.png"></div>
+<div><img src="img/cwb1.png"><a href="">Cartographers without borders</a></div>
+<div><img src="img/cwb2.gif"></div>
+<div><img src="img/cwb3.jpg"></div>
+<div><img src="img/cwb4.gif"></div>
+<div><a href="https://twitter.com/goumprod">GoumProd</a><img src="img/accident.jpg"></div>
+<div><img src="img/vintage.png"><a href="http://www.davidrumsey.com/luna/servlet/detail/RUMSEY~8~1~275762~90049129:-115--Islandia-?qvq=q%3Atype%3Dmap+OR+view+OR+title+AND+pub_list_no%3D%2210001.000%22+%3Bsort%3Apub_date%2Cpub_date%2Cpub_list_no%2Cseries_no%3Blc%3ARUMSEY~8~1&sort=pub_date%2Cpub_date%2Cpub_list_no%2Cseries_no&mi=119&trs=173">Vintage</a></div>
+<div><img src="img/OSM_4D.png"><a href="https://www.behance.net/gallery/24276859/City-Layouts">OSM+4D</a></div>
+<div><p>drapeaux</p><img src="img/europe.png"></div>
+<div><img src="img/tumblr.png"><a href="http://mapsdesign.tumblr.com/">http://mapsdesign.tumblr.com/</a></div>
+<div>:<img src="img/ascii1.png"></div>
+<div><img src="img/ascii2.png"><a href="https://medium.com/@vtcraghead/geoascii-93fe3764dfe1">ASCII</a></div>
+<div><img src="img/ski.png"><a href="http://christopherwesson.azurewebsites.net/2015/01/13/ski-maps/#sthash.CRuy3e5r.M4TrAROL.dpbs">Ski</a></div>
+<div><img src="img/datafrance.png"><a href="http://map.datafrance.info/">DataFrance</a></div>
+<div><img src="img/google_timeline.png"><a href="https://www.google.com/maps/timeline">Google Timeline</a></div>
+<div><img src="img/hillshade.jpg"><a href="https://www.mapbox.com/blog/mapbox-terrain-data-update/">Hillshading/contour lines @Mapbox</a></div>
+<div style="color:black"><img src="img/warming.jpg">British Isles in 2100</div>
+<div><img src="img/warming2.png"><a href="http://sealevel.climatecentral.org/">Surging seas</a></div>
+<div><img src="img/voronoi.png"><a href="http://360.here.com/2014/06/16/maps/">Airports Voronoi</a></div>
+<div><img src="img/amsterdam.png"><a href="http://www.mapsandthecity.com/2014/03/development-of-golden-age-amsterdam/">Development of Golden Age Amsterdam</a></div>
+<div><img src="img/forecast.png"><a href="http://forecast.io/#/f/48.8730,2.3716">Forecast.io</a> (+ API)</div>
+<div><img src="img/equalstates.png"><a href="http://bigthink.com/strange-maps/668-nil-europe-equipopulous"></a></div>
+<div><img src="img/wind.png"><a href="http://earth.nullschool.net/?utm_content=buffer31561&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer#current/wind/surface/level/orthographic=3.43,52.27,1024">Wind map</a></div>
+<div><img src="img/qgis.png"><a href="https://www.flickr.com/groups/qgis-screenshots/pool/">QGIS</a><a href="https://www.flickr.com/groups/qgis/pool/">(2)</a></div>
+<div><img src="img/prettiest.png"><a href="http://www.bostonglobe.com/ideas/2014/08/09/map-that-finds-prettiest-walking-route/HBNn34jchXcaR9zERUwhvK/story.html">The prettiest route</a></div>
+<div><img src="img/spotify.png"><a href="https://www.spotify.com/us/arts/serendipity/">Spotify</a></div>
+<div><img src="img/got.jpg"><a href="http://www.fantasticmaps.com/2013/03/the-free-city-of-braavos/">GoT</a></div>
+<div><img src="img/"><a href="http://www.goobingdetroit.com/">Detroit</a></div>
+<div><img src="img/cats.png"><a href="http://www.bellerbyandco.com/blog/random/cats-love-globes-you-should-too/?utm_content=buffer3b3ee&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer">chats :)</a></div>
+</body>
+</html>
