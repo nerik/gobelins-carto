@@ -15,7 +15,7 @@ var lines = [
 
 var lineByIds = {};
 
-files.slice(0,10).forEach(function (filename) {
+files.slice(0,200).forEach(function (filename) {
   if (filename === '.DS_Store') return;
   var file = fs.readFileSync(filename).toString();
   var stations = JSON.parse(file);
