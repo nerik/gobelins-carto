@@ -11,16 +11,38 @@
 </head>
 <body>
   <div id="map"></div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js">
+
+  </script>
 
   <script type="text/javascript">
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map').setView([51.505, -0.09], 2);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     // L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
-      id: 'mapbox.streets',
+      id: 'mapbox.pirates',
       accessToken: 'pk.eyJ1IjoibHJxZG8iLCJhIjoibzBPTzE0ZyJ9.-udp6yXoZGNOC7u3wF4GkQ'
   }).addTo(map);
+
+  var marker = L.marker([51.5, -0.09]).addTo(map);
+
+  $.ajax('summits.json').done(function (data) {
+    L.geoJson(data).addTo(map);
+  })
+
+  $.ajax('nepal.json').done(function (data) {
+    L.geoJson(data).addTo(map);
+  })
+
+  // L.geoJson(states, {
+  //     style: function(feature) {
+  //         switch (feature.properties.party) {
+  //             case 'Republican': return {color: "#ff0000"};
+  //             case 'Democrat':   return {color: "#0000ff"};
+  //         }
+  //     }
+  // }).addTo(map);
 
   </script>
 </body>
