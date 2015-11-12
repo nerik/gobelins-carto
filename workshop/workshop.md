@@ -19,17 +19,37 @@ I gave a workshop on web maps (and cartography in general) to a class of 20 stud
 
 ## So what was the plan?
 
-- *presentation* [maps showcase] http://nerik.github.io/gobelins-carto/prez/showcase/showcase.html
+- *presentation* : [Maps showcase](http://nerik.github.io/gobelins-carto/prez/showcase/showcase.html)
 Goal: shoot a maximum of beautiful/interesting/provocative maps to get them out of their morning lethargia.
 
 - *hands-on* : Make a Map
 Quick demo of Mapbox Studio Classic/Carto. Download and install.
 Make the ugliest map possible, an idea I stole from @bhecht https://twitter.com/bhecht/status/450633836636803073
 
--  
+- *presentation* : [Anatomy of a web map](http://nerik.github.io/anatomy-of-a-web-map/index_fr.html)
+
+- *hands-on* : Make a web map
+Integrate the ugly basemap made earlier in a leaflet map.
+GeoJSON.io
+Add a geojson overlay.
+Convert shapefiles and csv files to GeoJSON using easily accessible tools (online)
+
+- lunch break
+
+- *presentation* : [The OpenStreetMap revolution](http://nerik.github.io/gobelins-carto/prez/OSM/OSM.html)
+
+- <s>*hands-on* : Editing on JOSM/using the HOT task manager</s> -> didn't have enough time to do it
+
+- *hands-on* : CartoDB
+
+- *hands-on* : Mapbox GL/the new Mapbox Studio
+
+- *hands-on* : 3D
 
 
 ## A few thoughts
+
+- "make an ugly map" is a good idea. Made students confortable with a new tool and didn't limited the few of them that actually wanted to make a pretty map :)  
 
 - I originally planned to have a global theme for the whole day, so that both the hands-on parts and the overall workshop day had a clear objective. The theme I had in mind was : following the steps of Kilian Jornet, an alpinist and trail runner. Use the theme as a pretext to play with GPX tracks, 3D topography, etc.
 Turned out that data was too difficult to get, and this theme was not versatile enough, so I gave up on the "global workshop theme" thing. I think it was a mistake. Keeping students involved towards the end of the workshop would have been easier with this.
